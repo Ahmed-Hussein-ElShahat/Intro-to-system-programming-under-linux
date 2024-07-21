@@ -1,0 +1,45 @@
+Hello to the new bash
+
+ekteb ely t7bh> x=10
+The local variable variable[0] = x=10 
+
+ekteb ely t7bh> x=20
+The local variable is found so it became lclvariable[0]:   x=20
+
+ekteb ely t7bh> y=100
+The local variable variable[1] = y=100 
+
+ekteb ely t7bh> y=200
+The local variable is found so it became lclvariable[1]:   y=200
+
+ekteb ely t7bh> x=1 y=2 z=3 
+The local variable is found so it became lclvariable[0]:   x=1
+The local variable is found so it became lclvariable[1]:   y=2
+The local variable variable[2] = z=3 
+
+ekteb ely t7bh> export x=10 y=20 z=30
+The environment variable envp[57] = x=10
+The local variable is found so it became lclvariable[0]:   x=10
+The environment variable envp[58] = y=20
+The local variable is found so it became lclvariable[1]:   y=20
+The environment variable envp[59] = z=30
+The local variable is found so it became lclvariable[2]:   z=30
+
+ekteb ely t7bh> export x=200
+The envp variable is found so it  became envp[57] = x=200
+The local variable is found so it became lclvariable[0]:   x=200
+
+ekteb ely t7bh> /usr/bin/ls > Ahmed
+
+ekteb ely t7bh> /usr/bin/cat < Ahmed
+Ahmed
+de
+mybash
+mybash.c
+mybash_d.c
+ekteb ely t7bh> /usr/bin/ls /a 2> error
+Error redirection
+
+ekteb ely t7bh> /usr/bin/cat < error
+Input redirection
+/usr/bin/ls: cannot access '/a': No such file or directory
