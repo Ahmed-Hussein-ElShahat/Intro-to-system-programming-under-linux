@@ -1,0 +1,38 @@
+define print_string_arr
+	set $i=0
+	while($arg0[$i] != 0)
+		print $arg0[$i++]
+	end
+end
+
+document print_string_arr
+	print all the strings in the given array
+end
+
+
+define mv_test
+	#break at the function	
+	tbreak mymv
+	
+	#write the input to a file
+	!echo mv $arg0 $arg1 >foo
+
+	#run the source file
+	run <foo
+	
+	#print the arguments then delete the break point
+	print_string_arr argv
+	
+	until 82
+	print fd1
+	
+	if fd1 > -1
+		printf "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+		printf "\n"
+		bt
+		n 5
+		printf "opt_flag= %d\n", opt_flag
+		printf "fd2= %d\n", fd2
+		
+	end	
+end
