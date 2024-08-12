@@ -291,15 +291,11 @@ int main(){
 		else if(variable_flag != 0){
 			exit_status = 0;
 		}
-		else if(!strcmp(argv[0], "allVar")){
-			allVar();
-			exit_status = 0;
-		}
 
 		else if(!strcmp(argv[0], "help")){
 
 			//help prints all built-in commands and what they do
-			char *help_statment = "echo\treprints the geiven arguments\ncp\tcopies the source file to the destination\nmv\tmoves the source file to the destination\ncd\tchanges the current directory\npwd\tprints the curent working directory\ntype\tprints the type of the command(builtin or external or invalid command)\nenvir\tprints all environment variables\nexit\tleaves the bash\n";	
+			char *help_statment = "echo\treprints the geiven arguments\ncp\tcopies the source file to the destination\nmv\tmoves the source file to the destination\ncd\tchanges the current directory\npwd\tprints the curent working directory\ntype\tprints the type of the command(builtin or external or invalid command)\nenvir\tprints all environment variables\nfree\tprints info about the ram\nuptime\tprints the uptime of the system and the idle time spent in the process\n\nexit\tleaves the bash\n";	
 			write(STDOUT,help_statment, strlen(help_statment));
 			exit_status = 0;
 		}
