@@ -6,6 +6,8 @@ node *firstFree = (node *)myheap; // ptr to to the first free memory block in th
 
 
 void *HmmAlloc(size_t size){
+    if(size ==0) return NULL;
+
 	// adjust the size to the node size
 	size_t *sizelocation; // variable to save the size of the block
 	size_t total_size = size>sizeof(node) ? size + sizeof(size_t) : sizeof(node);// size of data and metadata
@@ -138,7 +140,9 @@ void *HmmAlloc(size_t size){
 
 
 void HmmFree(void *ptr){
-	node *newNode = (node *)((size_t *)ptr - 1);
+    if(ptr==NULL) return;
+    
+    node *newNode = (node *)((size_t *)ptr - 1);
 
 	//if no free blocks add this one to the free list
 	if((char *)firstFree == program_end){
