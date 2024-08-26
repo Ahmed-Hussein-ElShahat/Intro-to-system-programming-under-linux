@@ -304,6 +304,11 @@ void *realloc(void *pointer, size_t size){
 					deleteNode(dlk);
 					return pointer;
 				}
+				else if (dlk->size > added_size && dlk->size <= added_size + sizeof(node)){
+                           ptr->size += added_size + sizeof(size_t);
+                           deleteNode(dlk);
+                           return pointer;
+                       }	
 				else if(dlk->size > added_size + sizeof(node)){
 					ptr->size += added_size;
 					node * newNode = (node *)((char *)dlk + added_size + sizeof(size_t));
@@ -315,10 +320,11 @@ void *realloc(void *pointer, size_t size){
 			}
 			else{
 				node *newNode = (node *)((char *)(&(ptr->size) + 1) + ptr->size  + added_size);
-				ptr->size += added_size; 
-				newNode->size = -added_size - sizeof(size_t);
-				insertafternode(dlk->prev, newNode);
-				return pointer;
+                                ptr->size += added_size;
+                                newNode->size = dlk->size -added_size;
+                                insertafternode(dlk->prev, newNode);
+                                deleteNode(dlk);
+                                return pointer;
 			}
 			break;
 		}
