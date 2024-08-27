@@ -15,11 +15,11 @@ void * malloc(size_t size)
 void free(void *ptr)
 {
 	HmmFree(ptr);
+	return;
 }
 #endif
 
 void *HmmAlloc(size_t size){
-	
 	if(size ==0){
 	       	size = sizeof(node);
 	}
@@ -34,9 +34,9 @@ void *HmmAlloc(size_t size){
 	size_t total_size = size>sizeof(node) ? size + sizeof(size_t) : sizeof(node) + sizeof(size_t);// size of data and metadata
 	size = size > sizeof(node) ? size : sizeof(node); // the least size of a node must be equal to size
 	
-	
 	// each time no free blocks
 	if((char *)firstFree == NULL){
+		sleep(2);
 		sizelocation = (size_t *)sbrk((myceil((double)total_size/(blockSize)))*(blockSize));
 		 
 		if(sizelocation==(void *)-1){
@@ -77,7 +77,7 @@ void *HmmAlloc(size_t size){
 		// initialize a link to loop upon free blocks (which are doubly linked)
 		node *dlk = firstFree;
 		while(1){
-			if(dlk->size == size || (dlk->size > size && dlk->size < size + sizeof(node))){
+			if(dlk->size == size || (dlk->size > size && dlk->size <= size + sizeof(node))){
 				deleteNode(dlk);	
 				// return a void ptr to the place after the size and adjust the nodes
 				return (void *) ( &(dlk->size) + 1);
@@ -305,10 +305,10 @@ void *realloc(void *pointer, size_t size){
 					return pointer;
 				}
 				else if (dlk->size > added_size && dlk->size <= added_size + sizeof(node)){
-                           ptr->size += added_size + sizeof(size_t);
-                           deleteNode(dlk);
-                           return pointer;
-                       }	
+					ptr->size += added_size + sizeof(size_t);
+                                        deleteNode(dlk);
+                                        return pointer;
+				}
 				else if(dlk->size > added_size + sizeof(node)){
 					ptr->size += added_size;
 					node * newNode = (node *)((char *)dlk + added_size + sizeof(size_t));
@@ -320,11 +320,11 @@ void *realloc(void *pointer, size_t size){
 			}
 			else{
 				node *newNode = (node *)((char *)(&(ptr->size) + 1) + ptr->size  + added_size);
-                                ptr->size += added_size;
-                                newNode->size = dlk->size -added_size;
-                                insertafternode(dlk->prev, newNode);
-                                deleteNode(dlk);
-                                return pointer;
+				ptr->size += added_size; 
+				newNode->size = dlk->size -added_size;
+				insertafternode(dlk->prev, newNode);
+				deleteNode(dlk);
+				return pointer;
 			}
 			break;
 		}
@@ -335,8 +335,10 @@ void *realloc(void *pointer, size_t size){
 
 	free(pointer);
 	void *new_ptr = (size_t *)HmmAlloc(size);
-	new_ptr = memcpy(new_ptr, &(ptr->size) + 1, ptr->size);
-
+	if (((node *)((size_t *)new_ptr - 1))->size > ptr->size)
+		memmove(new_ptr, &(ptr->size) + 1, ptr->size);
+	else
+		memmove(new_ptr, &(ptr->size) + 1, ((node *)((size_t *)new_ptr - 1))->size);
 	//void * ret_ptr =  (void *) (&((size_t *)new_ptr) - 1);
-	return (void *)((size_t *)new_ptr - 1);
+	return new_ptr;
 }
