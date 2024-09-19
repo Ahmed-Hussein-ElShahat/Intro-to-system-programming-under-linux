@@ -1,4 +1,6 @@
 #include "Hmm.h"
+#include <unistd.h>
+
 #include <math.h>
 
 extern char edata;
